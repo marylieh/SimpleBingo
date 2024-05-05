@@ -1,0 +1,8 @@
+main: de.marylieh.simplebingo.SimpleBingo
+name: SimpleBingo
+version: 2.0
+description: This plugin allows you to play Bingo in Minecraft.
+api-version: '1.20'
+author: Marylieh
+
+commands:
