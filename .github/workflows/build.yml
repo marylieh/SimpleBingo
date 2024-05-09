@@ -17,7 +17,5 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: SimpleBingo-2.0-RELEASE.jar
-          path: |
-            ${{ steps.compile.outputs.BUILT_ARCHIVE }}
-            ${{ steps.compile.outputs.BUILT_CHECKSUM }}
+          name: latest
+          path: /home/runner/work/SimpleBingo/build/libs/*
