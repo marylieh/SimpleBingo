@@ -15,7 +15,7 @@ jobs:
         id: compile
         run: ./gradlew build
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: latest
-          path: /home/runner/work/SimpleBingo/build/libs/
+          path: ./build/libs/
