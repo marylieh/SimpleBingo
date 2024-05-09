@@ -1,0 +1,8 @@
+command:
+  backpack:
+    enabled: true
+    slots: 27
+
+InvalidItems:
+  - spawner
+  - command_block

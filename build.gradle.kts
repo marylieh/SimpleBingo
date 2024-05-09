@@ -3,16 +3,19 @@ plugins {
     id("io.papermc.paperweight.userdev") version "1.7.0"
 }
 
-group = "de.marylieh"
+group = "de.marylieh.simplebingo"
 version = "2.0-RELEASE"
 
 repositories {
     mavenCentral()
+    maven("https://libraries.minecraft.net")
 }
 
 dependencies {
-    paperDevBundle("1.20.6-R0.1-SNAPSHOT")
+    paperDevBundle("1.20.3-R0.1-SNAPSHOT")
     implementation("net.axay:kspigot:1.20.3")
+
+    compileOnly("com.mojang", "brigadier", "latest")
 }
 
 tasks {
