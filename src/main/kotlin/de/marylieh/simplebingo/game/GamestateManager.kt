@@ -16,9 +16,15 @@ object GamestateManager {
     private val backpackSlots
         get() = ConfigManager.config.getInt("command.backpack.slots")
 
-    val backpack = Bukkit.createInventory(null, backpackSlots, Component.text("Backpack", NamedTextColor.GOLD).decoration(
+    val backpack = Bukkit.createInventory(null, backpackSlots, Component.text("Backpack", NamedTextColor.GRAY).decoration(
         TextDecoration.BOLD, true))
 
-    var timer = true
+    var timer = false
+
+    var countdown = false
+
+    var timerPaused = true
+
+    var timeInSeconds = 0
 
 }

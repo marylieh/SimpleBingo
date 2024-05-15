@@ -14,7 +14,7 @@ class SettingsCommand {
                 this.player.sendMessage(Manager.prefix)
                 return@runs
             }
-            this.player.openGUI(SettingsGUI.settingsGUI)
+            this.player.openGUI(SettingsGUI().settingsGUI)
         }
     }
 }

@@ -2,6 +2,7 @@ package de.marylieh.simplebingo
 
 import de.marylieh.simplebingo.commands.*
 import de.marylieh.simplebingo.config.ConfigManager
+import de.marylieh.simplebingo.game.TimerManager
 import net.axay.kspigot.commands.register
 import net.axay.kspigot.main.KSpigot
 import net.kyori.adventure.text.Component
@@ -23,6 +24,7 @@ class InternalMainClass : KSpigot() {
         registerCommands()
         this.saveDefaultConfig()
         ConfigManager.save()
+        TimerManager.runTask()
     }
 
     override fun shutdown() {
@@ -35,6 +37,7 @@ class InternalMainClass : KSpigot() {
         ReloadConfigCommand().reloadConfigCommand.register()
         BpCommand().bpCommand.register()
         SettingsCommand().settingsCommand.register()
+        TimerCommand().timerCommand.register()
     }
 
     val prefix =
