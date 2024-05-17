@@ -1,5 +1,7 @@
 package de.marylieh.simplebingo.game
 
+import de.marylieh.simplebingo.Manager
+import net.axay.kspigot.extensions.broadcast
 import net.axay.kspigot.runnables.task
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -8,7 +10,7 @@ import org.bukkit.Bukkit
 
 object TimerManager {
 
-    private fun stringifyTime(time: Int): String {
+    fun stringifyTime(time: Int): String {
         var duration = time
         var stringifiedTime = ""
 
@@ -72,7 +74,19 @@ object TimerManager {
             howOften = null
         ) {
             setActionbar()
-            GamestateManager.timeInSeconds += 1
+
+            if (GamestateManager.countdown) {
+                GamestateManager.timeInSeconds -= 1
+            } else {
+                GamestateManager.timeInSeconds += 1
+            }
+        }
+
+        if (GamestateManager.timeInSeconds < 1) {
+            GamestateManager.endPhase = true
+
+            broadcast(Manager.prefix
+                .append(Component.text("Die Bingo Runde ist vorbei!", NamedTextColor.GREEN).decoration(TextDecoration.BOLD, false)))
         }
     }
 

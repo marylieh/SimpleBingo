@@ -10,6 +10,8 @@ object GamestateManager {
 
     var passive = false
 
+    var endPhase = false
+
     val backpackEnabled
         get() = ConfigManager.config.getBoolean("command.backpack.enabled")
 

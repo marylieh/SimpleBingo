@@ -39,7 +39,7 @@ object SettingsIcons {
             }
         }
 
-    val countdownIcon: ItemStack
+    val countdownGUIIcon: ItemStack
         get() {
             return itemStack(Material.CLOCK) {
                 addEnchantment(Enchantment.DURABILITY, 1)
@@ -50,6 +50,25 @@ object SettingsIcons {
                     }
 
                     flag(ItemFlag.HIDE_ENCHANTS)
+                    addLore {
+                        +literalText("Öffnet das Countdown Einstellungsmenü.") {
+                            color = KColors.GRAY
+                            italic = true
+                        }
+                    }
+                }
+            }
+        }
+
+    val countdownIcon: ItemStack
+        get() {
+            return itemStack(Material.CLOCK) {
+                meta {
+                    name = literalText("Countdown") {
+                        color = KColors.GOLDENROD
+                        italic = false
+                    }
+
                     addLore {
                         +literalText("Aktiviert/Deaktiviert einen Countdown.") {
                             color = KColors.GRAY
@@ -65,6 +84,56 @@ object SettingsIcons {
                             italic = false
                         }
                         +SettingsManager.countdownStateComponent
+                    }
+                }
+            }
+        }
+
+    val addCountdownTimeIcon: ItemStack
+        get() {
+            return itemStack(Material.GREEN_WOOL) {
+                meta {
+                    name = literalText("+1 Minute") {
+                        color = KColors.GREEN
+                        italic = false
+                    }
+
+                    addLore {
+                        +literalText("Fügt eine Minute zum Countdown hinzu.") {
+                            color = KColors.GRAY
+                            italic = true
+                        }
+                        +literalText(" ")
+                        +literalText("Aktuelle Zeit: ") {
+                            color = KColors.GRAY
+                            italic = false
+                        }
+                        +SettingsManager.countdownTimeComponent
+                    }
+                }
+            }
+        }
+
+    val reduceCountdownTimeIcon: ItemStack
+        get() {
+            return itemStack(Material.RED_WOOL) {
+                meta {
+                    name = literalText("-1 Minute") {
+                        color = KColors.RED
+                        italic = false
+                    }
+
+                    addLore {
+                        +literalText("Entfernt eine Minute des Countdowns.") {
+                            color = KColors.GRAY
+                            italic = true
+                        }
+                        +literalText(" ")
+                        +literalText("Aktuelle Zeit: ") {
+                            color = KColors.GRAY
+                            italic = false
+                        }
+                        +SettingsManager.countdownTimeComponent
                     }
                 }
             }

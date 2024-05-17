@@ -1,6 +1,7 @@
 package de.marylieh.simplebingo.gui.guimanager
 
 import de.marylieh.simplebingo.game.GamestateManager
+import de.marylieh.simplebingo.game.TimerManager
 import net.axay.kspigot.chat.KColors
 import net.axay.kspigot.chat.literalText
 import net.kyori.adventure.text.Component
@@ -24,6 +25,7 @@ object SettingsManager {
             GamestateManager.countdown = false
             return
         }
+        GamestateManager.timeInSeconds = 1800
         GamestateManager.countdown = true
     }
 
@@ -51,6 +53,14 @@ object SettingsManager {
             }
             return literalText("Deaktiviert") {
                 color = KColors.RED
+                bold = true
+            }
+        }
+
+    val countdownTimeComponent: Component
+        get() {
+            return literalText(TimerManager.stringifyTime(GamestateManager.timeInSeconds)) {
+                color = KColors.LIMEGREEN
                 bold = true
             }
         }
