@@ -23,24 +23,25 @@ import org.bukkit.entity.Player
 
 class SettingsGUI {
 
-    val settingsGUI = kSpigotGUI(GUIType.SIX_BY_NINE) {
+    val settingsGUI = kSpigotGUI(GUIType.FOUR_BY_NINE) {
         title = literalText("Settings") {
             color = KColors.LIMEGREEN
         }
         page(1) {
             placeholder(Slots.Border, itemStack(Material.WHITE_STAINED_GLASS_PANE) { meta { name = null } })
-            button(Slots.RowFiveSlotTwo, SettingsIcons.timerIcon) { clickEvent ->
+            button(Slots.RowThreeSlotTwo, SettingsIcons.timerIcon) { clickEvent ->
 
                 (clickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
                     SettingsManager.switchTimer()
                     player.sendMessage(Manager.prefix
                         .append(Component.text("Der Timer ist nun ", NamedTextColor.GRAY).decoration(TextDecoration.BOLD, false))
                         .append(SettingsManager.timerStateComponent))
-                    player.closeInventory()
+                    player.playSound(Sound.sound(Key.key("entity.arrow.hit_player"), Sound.Source.MASTER, 1f, 1f))
+                    updateMainGUI(player)
                 }
             }
 
-            button(Slots.RowFiveSlotFour, SettingsIcons.countdownGUIIcon) { clickEvent ->
+            button(Slots.RowThreeSlotFour, SettingsIcons.countdownGUIIcon) { clickEvent ->
 
                 (clickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
                     updateCountdownGUI(player)
@@ -52,7 +53,16 @@ class SettingsGUI {
 
         page(2) {
             placeholder(Slots.Border, itemStack(Material.WHITE_STAINED_GLASS_PANE) { meta { name = null } })
-            button(Slots.RowFiveSlotTwo, SettingsIcons.addCountdownTimeIcon) { clickEvent ->
+
+            placeholder(Slots.ColumnThree, itemStack(Material.WHITE_STAINED_GLASS_PANE) { meta { name = null } })
+            placeholder(Slots.ColumnFour, itemStack(Material.WHITE_STAINED_GLASS_PANE) { meta { name = null } })
+            placeholder(Slots.ColumnSix, itemStack(Material.WHITE_STAINED_GLASS_PANE) { meta { name = null } })
+            placeholder(Slots.ColumnSeven, itemStack(Material.WHITE_STAINED_GLASS_PANE) { meta { name = null } })
+
+            placeholder(Slots.RowTwoSlotFive, itemStack(Material.WHITE_STAINED_GLASS_PANE) { meta { name = null } })
+            placeholder(Slots.RowTwoSlotTwo, itemStack(Material.WHITE_STAINED_GLASS_PANE) { meta { name = null } })
+
+            button(Slots.RowThreeSlotTwo, SettingsIcons.addCountdownTimeIcon) { clickEvent ->
 
                 (clickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
                     GamestateManager.timeInSeconds += 60
@@ -62,7 +72,7 @@ class SettingsGUI {
 
             }
 
-            button(Slots.RowFiveSlotFour, SettingsIcons.countdownIcon) { clickEvent ->
+            button(Slots.RowThreeSlotFive, SettingsIcons.countdownIcon) { clickEvent ->
 
                 (clickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
                     SettingsManager.switchCountdown()
@@ -70,11 +80,12 @@ class SettingsGUI {
                         .append(Component.text("Der Countdown ist nun ", NamedTextColor.GRAY).decoration(TextDecoration.BOLD, false))
                         .append(SettingsManager.countdownStateComponent))
                     updateCountdownGUI(player)
+                    player.playSound(Sound.sound(Key.key("entity.arrow.hit_player"), Sound.Source.MASTER, 1f, 1f))
                 }
 
             }
 
-            button(Slots.RowFiveSlotEight, SettingsIcons.reduceCountdownTimeIcon) { clickEvent ->
+            button(Slots.RowThreeSlotEight, SettingsIcons.reduceCountdownTimeIcon) { clickEvent ->
 
                 (clickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
                     GamestateManager.timeInSeconds -= 60
@@ -83,10 +94,34 @@ class SettingsGUI {
                 }
 
             }
+
+            button(Slots.RowTwoSlotFive, SettingsIcons.resetCountdownIcon) { clickEvent ->
+
+                (clickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
+                    GamestateManager.timerPaused = true
+                    GamestateManager.timeInSeconds = 1800
+                    player.sendMessage(Manager.prefix
+                        .append(Component.text("Der Timer wurde ", NamedTextColor.WHITE).decoration(TextDecoration.BOLD, false))
+                        .append(Component.text("zurückgesetzt.", NamedTextColor.RED).decoration(TextDecoration.BOLD, false)))
+                }
+
+            }
+
+            button(Slots.RowTwoSlotEight, SettingsIcons.backIcon) { clickEvent ->
+
+                (clickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
+                    updateMainGUI(player)
+                }
+
+            }
         }
     }
 
     private fun updateCountdownGUI(player: Player) {
-        player.openGUI(settingsGUI, 2)
+        player.openGUI(SettingsGUI().settingsGUI, 2)
+    }
+
+    private fun updateMainGUI(player: Player) {
+        player.openGUI(SettingsGUI().settingsGUI, 1)
     }
 }

@@ -3,10 +3,11 @@ package de.marylieh.simplebingo.gui.icons
 import de.marylieh.simplebingo.gui.guimanager.SettingsManager
 import net.axay.kspigot.chat.KColors
 import net.axay.kspigot.chat.literalText
-import net.axay.kspigot.items.*
+import net.axay.kspigot.items.addLore
+import net.axay.kspigot.items.itemStack
+import net.axay.kspigot.items.meta
+import net.axay.kspigot.items.name
 import org.bukkit.Material
-import org.bukkit.enchantments.Enchantment
-import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 
 object SettingsIcons {
@@ -41,15 +42,13 @@ object SettingsIcons {
 
     val countdownGUIIcon: ItemStack
         get() {
-            return itemStack(Material.CLOCK) {
-                addEnchantment(Enchantment.DURABILITY, 1)
+            return itemStack(Material.REDSTONE) {
                 meta {
                     name = literalText("Countdown") {
-                        color = KColors.GOLDENROD
+                        color = KColors.GOLD
                         italic = false
                     }
 
-                    flag(ItemFlag.HIDE_ENCHANTS)
                     addLore {
                         +literalText("Öffnet das Countdown Einstellungsmenü.") {
                             color = KColors.GRAY
@@ -134,6 +133,49 @@ object SettingsIcons {
                             italic = false
                         }
                         +SettingsManager.countdownTimeComponent
+                    }
+                }
+            }
+        }
+
+    val resetCountdownIcon: ItemStack
+        get() {
+            return itemStack(Material.RED_CONCRETE) {
+                meta {
+                    name = literalText("Countdown zurücksetzen") {
+                        color = KColors.DARKRED
+                        italic = false
+                    }
+
+                    addLore {
+                        +literalText("Setzt den Countdown auf ") {
+                            color = KColors.GRAY
+                            italic = true
+                        }
+                        +literalText("30 Minuten zurück.") {
+                            color = KColors.GRAY
+                            italic = true
+                        }
+                    }
+                }
+            }
+        }
+
+    val backIcon: ItemStack
+        get() {
+            return itemStack(Material.BREWING_STAND) {
+                meta {
+                    name = literalText("Zurück") {
+                        color = KColors.WHITE
+                        italic = false
+                        bold = true
+                    }
+
+                    addLore {
+                        +literalText("Bringt dich eine Seite zurück") {
+                            color = KColors.GRAY
+                            italic = true
+                        }
                     }
                 }
             }

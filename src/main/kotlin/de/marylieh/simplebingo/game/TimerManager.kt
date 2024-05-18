@@ -54,7 +54,7 @@ object TimerManager {
     }
     
     private fun setActionbar() {
-        if (GamestateManager.timer) {
+        if (GamestateManager.timer || GamestateManager.countdown) {
             Bukkit.getOnlinePlayers().forEach {
 
                 if (GamestateManager.timerPaused) {
@@ -75,18 +75,24 @@ object TimerManager {
         ) {
             setActionbar()
 
+            if (GamestateManager.timerPaused) {
+                return@task
+            }
+
             if (GamestateManager.countdown) {
                 GamestateManager.timeInSeconds -= 1
             } else {
                 GamestateManager.timeInSeconds += 1
             }
-        }
 
-        if (GamestateManager.timeInSeconds < 1) {
-            GamestateManager.endPhase = true
+            if (GamestateManager.timeInSeconds < 1) {
+                GamestateManager.endPhase = true
+                GamestateManager.timerPaused = true
 
-            broadcast(Manager.prefix
-                .append(Component.text("Die Bingo Runde ist vorbei!", NamedTextColor.GREEN).decoration(TextDecoration.BOLD, false)))
+                broadcast(
+                    Manager.prefix
+                    .append(Component.text("Die Bingo Runde ist vorbei!", NamedTextColor.GREEN).decoration(TextDecoration.BOLD, false)))
+            }
         }
     }
 

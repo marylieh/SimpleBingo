@@ -30,7 +30,7 @@ class TimerCommand {
                     this.player.sendMessage(Manager.insufficientPermissions)
                     return@runs
                 }
-                GamestateManager.timerPaused = false
+                GamestateManager.timerPaused = true
                 this.player.sendMessage(Manager.prefix
                     .append(Component.text("Der Timer wurde ", NamedTextColor.WHITE).decoration(TextDecoration.BOLD, false))
                     .append(Component.text("pausiert.", NamedTextColor.GOLD).decoration(TextDecoration.BOLD, false)))
