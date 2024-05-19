@@ -5,21 +5,21 @@ import de.marylieh.simplebingo.game.GamestateManager
 import de.marylieh.simplebingo.gui.guimanager.SettingsManager
 import de.marylieh.simplebingo.gui.icons.SettingsIcons
 import net.axay.kspigot.chat.KColors
+import net.axay.kspigot.chat.input.awaitChatInput
 import net.axay.kspigot.chat.literalText
-import net.axay.kspigot.gui.GUIType
-import net.axay.kspigot.gui.Slots
-import net.axay.kspigot.gui.kSpigotGUI
-import net.axay.kspigot.gui.openGUI
+import net.axay.kspigot.gui.*
 import net.axay.kspigot.items.itemStack
 import net.axay.kspigot.items.meta
 import net.axay.kspigot.items.name
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 
 class SettingsGUI {
 
@@ -28,6 +28,9 @@ class SettingsGUI {
             color = KColors.LIMEGREEN
         }
         page(1) {
+            transitionFrom = PageChangeEffect.SLIDE_HORIZONTALLY
+            transitionTo = PageChangeEffect.SLIDE_HORIZONTALLY
+
             placeholder(Slots.Border, itemStack(Material.WHITE_STAINED_GLASS_PANE) { meta { name = null } })
             button(Slots.RowThreeSlotTwo, SettingsIcons.timerIcon) { clickEvent ->
 
@@ -41,17 +44,15 @@ class SettingsGUI {
                 }
             }
 
-            button(Slots.RowThreeSlotFour, SettingsIcons.countdownGUIIcon) { clickEvent ->
-
-                (clickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
-                    updateCountdownGUI(player)
-                }
-
-            }
+            this.pageChanger(Slots.RowThreeSlotFour, SettingsIcons.countdownGUIIcon, 2, null, null)
 
         }
 
         page(2) {
+
+            transitionFrom = PageChangeEffect.SLIDE_HORIZONTALLY
+            transitionTo = PageChangeEffect.SLIDE_HORIZONTALLY
+
             placeholder(Slots.Border, itemStack(Material.WHITE_STAINED_GLASS_PANE) { meta { name = null } })
 
             placeholder(Slots.ColumnThree, itemStack(Material.WHITE_STAINED_GLASS_PANE) { meta { name = null } })
@@ -107,10 +108,32 @@ class SettingsGUI {
 
             }
 
-            button(Slots.RowTwoSlotEight, SettingsIcons.backIcon) { clickEvent ->
+            pageChanger(Slots.RowTwoSlotEight, SettingsIcons.backIcon, 1, null, null)
+        }
+
+        page(3) {
+            transitionFrom = PageChangeEffect.SWIPE_HORIZONTALLY
+            transitionTo = PageChangeEffect.SWIPE_HORIZONTALLY
+
+            placeholder(Slots.Border, itemStack(Material.WHITE_STAINED_GLASS_PANE) { meta { name = null } })
+
+            button(Slots.RowThreeSlotTwo, SettingsIcons.createTeamIcon) { clickEvent ->
 
                 (clickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
-                    updateMainGUI(player)
+                    player.awaitChatInput("Gebe den Namen des neuen Teams ein.") { name ->
+                        val teamName = name.input as TextComponent
+                        GamestateManager.tmp = teamName.content()
+                    }
+
+                    val compound = createRectCompound<Material>(
+                        Slots.RowOneSlotOne, Slots.RowFourSlotEight,
+                        iconGenerator = {
+                            ItemStack(it)
+                        },
+                        onClick = { onClick, element ->
+                            
+                        }
+                    )
                 }
 
             }

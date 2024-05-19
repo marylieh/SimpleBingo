@@ -86,7 +86,7 @@ object TimerManager {
             }
 
             if (GamestateManager.timeInSeconds < 1) {
-                GamestateManager.endPhase = true
+                GamestateManager.currentGameState = GameStates.FINAL_PHASE
                 GamestateManager.timerPaused = true
 
                 broadcast(

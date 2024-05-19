@@ -64,4 +64,12 @@ object SettingsManager {
                 bold = true
             }
         }
+
+    val teamCountComponent: Component
+        get() {
+            return literalText(GamestateManager.teams.count().toString()) {
+                color = KColors.LIMEGREEN
+                bold = true
+            }
+        }
 }

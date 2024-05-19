@@ -180,4 +180,48 @@ object SettingsIcons {
                 }
             }
         }
+
+    val teamsIcon: ItemStack
+        get() {
+            return itemStack(Material.YELLOW_WOOL) {
+                meta {
+                    name = literalText("Team Verwaltung") {
+                        color = KColors.YELLOW
+                        italic = false
+                    }
+
+                    addLore {
+                        +literalText("Öffnet das Team Verwaltungs Menü") {
+                            color = KColors.GRAY
+                            italic = true
+                        }
+                    }
+                }
+            }
+        }
+
+    val createTeamIcon: ItemStack
+        get() {
+            return itemStack(Material.LIME_WOOL) {
+                meta {
+                    name = literalText("Erstelle ein neues Team") {
+                        color = KColors.LIMEGREEN
+                        italic = false
+                    }
+
+                    addLore {
+                        +literalText("Erstellt eine neues Team.") {
+                            color = KColors.GRAY
+                            italic = true
+                        }
+                        +literalText(" ")
+                        +literalText("Aktuelle Anzahl Teams: ") {
+                            color = KColors.GRAY
+                            italic = false
+                        }
+                        +SettingsManager.teamCountComponent
+                    }
+                }
+            }
+        }
 }

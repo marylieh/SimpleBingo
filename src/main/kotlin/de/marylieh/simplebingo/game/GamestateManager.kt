@@ -1,6 +1,7 @@
 package de.marylieh.simplebingo.game
 
 import de.marylieh.simplebingo.config.ConfigManager
+import de.marylieh.simplebingo.teams.Team
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
@@ -8,9 +9,13 @@ import org.bukkit.Bukkit
 
 object GamestateManager {
 
+    var tmp = ""
+
     var passive = false
 
-    var endPhase = false
+    var teams: MutableList<Team> = mutableListOf()
+
+    var currentGameState = GameStates.LOBBY_PHASE
 
     val backpackEnabled
         get() = ConfigManager.config.getBoolean("command.backpack.enabled")
@@ -29,4 +34,10 @@ object GamestateManager {
 
     var timeInSeconds = 0
 
+}
+
+enum class GameStates {
+    LOBBY_PHASE,
+    GAME_PHASE,
+    FINAL_PHASE
 }
