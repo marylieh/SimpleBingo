@@ -1,10 +1,11 @@
 package de.marylieh.simplebingo.teams
 
 import de.marylieh.simplebingo.game.GamestateManager
+import org.bukkit.Material
 
 object TeamManager {
 
-    fun createTeam(name: String, color: TeamColors) {
+    fun createTeam(name: String, color: Material) {
 
         if (GamestateManager.teams.first { it.name == name }.name.equals(name, true)) {
             return

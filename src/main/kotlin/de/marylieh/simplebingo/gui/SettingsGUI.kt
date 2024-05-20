@@ -4,6 +4,8 @@ import de.marylieh.simplebingo.Manager
 import de.marylieh.simplebingo.game.GamestateManager
 import de.marylieh.simplebingo.gui.guimanager.SettingsManager
 import de.marylieh.simplebingo.gui.icons.SettingsIcons
+import de.marylieh.simplebingo.teams.TeamManager
+import de.marylieh.simplebingo.teams.teamMaterials
 import net.axay.kspigot.chat.KColors
 import net.axay.kspigot.chat.input.awaitChatInput
 import net.axay.kspigot.chat.literalText
@@ -45,6 +47,7 @@ class SettingsGUI {
             }
 
             this.pageChanger(Slots.RowThreeSlotFour, SettingsIcons.countdownGUIIcon, 2, null, null)
+            this.pageChanger(Slots.RowThreeSlotSix, SettingsIcons.teamsIcon, 3, null, null)
 
         }
 
@@ -120,19 +123,39 @@ class SettingsGUI {
             button(Slots.RowThreeSlotTwo, SettingsIcons.createTeamIcon) { clickEvent ->
 
                 (clickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
+                    player.closeInventory()
                     player.awaitChatInput("Gebe den Namen des neuen Teams ein.") { name ->
                         val teamName = name.input as TextComponent
                         GamestateManager.tmp = teamName.content()
                     }
-
+                    // TODO: Open Compound GUI
                     val compound = createRectCompound<Material>(
                         Slots.RowOneSlotOne, Slots.RowFourSlotEight,
                         iconGenerator = {
                             ItemStack(it)
                         },
-                        onClick = { onClick, element ->
-                            
+                        onClick = { clickEvent, element ->
+                            TeamManager.createTeam(GamestateManager.tmp, element)
+                            clickEvent.player.sendMessage(Manager.prefix
+                                .append(Component.text("Das Team ", NamedTextColor.GRAY).decoration(TextDecoration.BOLD, false))
+                                .append(Component.text(GamestateManager.tmp, NamedTextColor.WHITE).decoration(TextDecoration.BOLD, true))
+                                .append(Component.text(" wurde erstellt.", NamedTextColor.GRAY).decoration(TextDecoration.BOLD, false)))
                         }
+                    )
+                    compound.addContent(teamMaterials)
+                    compound.sortContentBy { it.name }
+                    compoundScroll(
+                        Slots.RowOneSlotNine,
+                        ItemStack(Material.PAPER),
+                        compound,
+                        scrollTimes = 4
+                    )
+                    compoundScroll(
+                        Slots.RowFourSlotNine,
+                        ItemStack(Material.PAPER),
+                        compound,
+                        scrollTimes = 4,
+                        reverse = true
                     )
                 }
 
