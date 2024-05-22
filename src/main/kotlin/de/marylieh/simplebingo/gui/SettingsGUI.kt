@@ -127,39 +127,48 @@ class SettingsGUI {
                     player.awaitChatInput("Gebe den Namen des neuen Teams ein.") { name ->
                         val teamName = name.input as TextComponent
                         GamestateManager.tmp = teamName.content()
-                    }
-                    // TODO: Open Compound GUI
-                    val compound = createRectCompound<Material>(
-                        Slots.RowOneSlotOne, Slots.RowFourSlotEight,
-                        iconGenerator = {
-                            ItemStack(it)
-                        },
-                        onClick = { clickEvent, element ->
-                            TeamManager.createTeam(GamestateManager.tmp, element)
-                            clickEvent.player.sendMessage(Manager.prefix
-                                .append(Component.text("Das Team ", NamedTextColor.GRAY).decoration(TextDecoration.BOLD, false))
-                                .append(Component.text(GamestateManager.tmp, NamedTextColor.WHITE).decoration(TextDecoration.BOLD, true))
-                                .append(Component.text(" wurde erstellt.", NamedTextColor.GRAY).decoration(TextDecoration.BOLD, false)))
+
+                        while (teamName.content().isBlank()) {
+                            return@awaitChatInput
                         }
-                    )
-                    compound.addContent(teamMaterials)
-                    compound.sortContentBy { it.name }
-                    compoundScroll(
-                        Slots.RowOneSlotNine,
-                        ItemStack(Material.PAPER),
-                        compound,
-                        scrollTimes = 4
-                    )
-                    compoundScroll(
-                        Slots.RowFourSlotNine,
-                        ItemStack(Material.PAPER),
-                        compound,
-                        scrollTimes = 4,
-                        reverse = true
-                    )
+                    }
+                    // TODO: Open color GUI before text input or wait till text input is received
+                    updateTeamColorGUI(player)
                 }
 
             }
+        }
+        page(4) {
+            val compound = createRectCompound<Material>(
+                Slots.RowOneSlotOne, Slots.RowFourSlotEight,
+                iconGenerator = {
+                    ItemStack(it)
+                },
+                onClick = { clickEvent, element ->
+                    TeamManager.createTeam(GamestateManager.tmp, element)
+                    clickEvent.player.sendMessage(Manager.prefix
+                        .append(Component.text("Das Team ", NamedTextColor.GRAY).decoration(TextDecoration.BOLD, false))
+                        .append(Component.text(GamestateManager.tmp, NamedTextColor.WHITE).decoration(TextDecoration.BOLD, true))
+                        .append(Component.text(" wurde erstellt.", NamedTextColor.GRAY).decoration(TextDecoration.BOLD, false)))
+                    GamestateManager.tmp = ""
+                    clickEvent.player.closeInventory()
+                }
+            )
+            compound.addContent(teamMaterials)
+            compound.sortContentBy { it.name }
+            compoundScroll(
+                Slots.RowOneSlotNine,
+                ItemStack(Material.PAPER),
+                compound,
+                scrollTimes = 4
+            )
+            compoundScroll(
+                Slots.RowFourSlotNine,
+                ItemStack(Material.PAPER),
+                compound,
+                scrollTimes = 4,
+                reverse = true
+            )
         }
     }
 
@@ -169,5 +178,9 @@ class SettingsGUI {
 
     private fun updateMainGUI(player: Player) {
         player.openGUI(SettingsGUI().settingsGUI, 1)
+    }
+
+    private fun updateTeamColorGUI(player: Player) {
+        player.openGUI(SettingsGUI().settingsGUI, 4)
     }
 }
