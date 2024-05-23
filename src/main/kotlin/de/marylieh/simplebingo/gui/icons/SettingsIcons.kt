@@ -210,7 +210,36 @@ object SettingsIcons {
                     }
 
                     addLore {
-                        +literalText("Erstellt eine neues Team.") {
+                        +literalText("Erstellt ein neues Team.") {
+                            color = KColors.GRAY
+                            italic = true
+                        }
+                        +literalText(" ")
+                        +literalText("Aktuelle Anzahl Teams: ") {
+                            color = KColors.GRAY
+                            italic = false
+                        }
+                        +SettingsManager.teamCountComponent
+                    }
+                }
+            }
+        }
+
+    val getTeamsIcon: ItemStack
+        get() {
+            return itemStack(Material.GRAY_WOOL) {
+                meta {
+                    name = literalText("Verwalte bestehende Teams.") {
+                        color = KColors.LIMEGREEN
+                        italic = false
+                    }
+
+                    addLore {
+                        +literalText("Verwaltet bereits ") {
+                            color = KColors.GRAY
+                            italic = true
+                        }
+                        +literalText("bestehende Teams.") {
                             color = KColors.GRAY
                             italic = true
                         }

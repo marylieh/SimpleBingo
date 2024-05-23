@@ -4,15 +4,14 @@ import de.marylieh.simplebingo.Manager
 import de.marylieh.simplebingo.game.GamestateManager
 import de.marylieh.simplebingo.gui.guimanager.SettingsManager
 import de.marylieh.simplebingo.gui.icons.SettingsIcons
+import de.marylieh.simplebingo.teams.Team
 import de.marylieh.simplebingo.teams.TeamManager
 import de.marylieh.simplebingo.teams.teamMaterials
 import net.axay.kspigot.chat.KColors
 import net.axay.kspigot.chat.input.awaitChatInput
 import net.axay.kspigot.chat.literalText
 import net.axay.kspigot.gui.*
-import net.axay.kspigot.items.itemStack
-import net.axay.kspigot.items.meta
-import net.axay.kspigot.items.name
+import net.axay.kspigot.items.*
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
@@ -123,17 +122,15 @@ class SettingsGUI {
             button(Slots.RowThreeSlotTwo, SettingsIcons.createTeamIcon) { clickEvent ->
 
                 (clickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
-                    player.closeInventory()
-                    player.awaitChatInput("Gebe den Namen des neuen Teams ein.") { name ->
-                        val teamName = name.input as TextComponent
-                        GamestateManager.tmp = teamName.content()
-
-                        while (teamName.content().isBlank()) {
-                            return@awaitChatInput
-                        }
-                    }
-                    // TODO: Open color GUI before text input or wait till text input is received
                     updateTeamColorGUI(player)
+                }
+
+            }
+
+            button(Slots.RowThreeSlotFour, SettingsIcons.getTeamsIcon) { clickEvent ->
+
+                (clickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
+                    updateTeamManagementGUI(player)
                 }
 
             }
@@ -145,13 +142,23 @@ class SettingsGUI {
                     ItemStack(it)
                 },
                 onClick = { clickEvent, element ->
-                    TeamManager.createTeam(GamestateManager.tmp, element)
-                    clickEvent.player.sendMessage(Manager.prefix
-                        .append(Component.text("Das Team ", NamedTextColor.GRAY).decoration(TextDecoration.BOLD, false))
-                        .append(Component.text(GamestateManager.tmp, NamedTextColor.WHITE).decoration(TextDecoration.BOLD, true))
-                        .append(Component.text(" wurde erstellt.", NamedTextColor.GRAY).decoration(TextDecoration.BOLD, false)))
-                    GamestateManager.tmp = ""
-                    clickEvent.player.closeInventory()
+                    //clickEvent.player.closeInventory()
+                    // TODO: Fix chat input
+                    clickEvent.player.awaitChatInput("Gebe den Namen des neuen Teams ein.") { name ->
+                        val teamName = name.input as TextComponent
+                        GamestateManager.tmp = teamName.content()
+
+                        TeamManager.createTeam(GamestateManager.tmp, element)
+                        clickEvent.player.sendMessage(Manager.prefix
+                            .append(Component.text("Das Team ", NamedTextColor.GRAY).decoration(TextDecoration.BOLD, false))
+                            .append(Component.text(GamestateManager.tmp, NamedTextColor.WHITE).decoration(TextDecoration.BOLD, true))
+                            .append(Component.text(" wurde erstellt.", NamedTextColor.GRAY).decoration(TextDecoration.BOLD, false)))
+                        GamestateManager.tmp = ""
+
+                        while (teamName.content().isBlank()) {
+                            return@awaitChatInput
+                        }
+                    }
                 }
             )
             compound.addContent(teamMaterials)
@@ -170,6 +177,33 @@ class SettingsGUI {
                 reverse = true
             )
         }
+        page(5) {
+            transitionFrom = PageChangeEffect.SLIDE_VERTICALLY
+            transitionTo = PageChangeEffect.SLIDE_VERTICALLY
+
+            val compound = createRectCompound<Team>(
+                Slots.RowOneSlotOne, Slots.RowFourSlotEight,
+                iconGenerator = {
+                    itemStack(it.color) {
+                        setMeta {
+                            name = literalText(it.name) {
+                                color = KColors.WHITE
+                                italic = false
+                                bold = true
+                            }
+                            // TODO: Implement Team Lore
+                            addLore {
+                                +""
+                            }
+                        }
+                    }
+                },
+                onClick = { clickEvent, element ->
+                    // TODO: Implement logic here
+                }
+            )
+            compound.sortContentBy { it.name }
+        }
     }
 
     private fun updateCountdownGUI(player: Player) {
@@ -182,5 +216,9 @@ class SettingsGUI {
 
     private fun updateTeamColorGUI(player: Player) {
         player.openGUI(SettingsGUI().settingsGUI, 4)
+    }
+
+    private fun updateTeamManagementGUI(player: Player) {
+        player.openGUI(SettingsGUI().settingsGUI, 5)
     }
 }
