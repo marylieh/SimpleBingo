@@ -191,15 +191,22 @@ class SettingsGUI {
                                 italic = false
                                 bold = true
                             }
-                            // TODO: Implement Team Lore
                             addLore {
-                                +""
+                                +literalText("Mitglieder: ${it.members.size}") {
+                                    color = KColors.AQUA
+                                    italic = false
+                                }
+                                +literalText(" ")
+                                +literalText("Klicke, um das Team zu bearbeiten.") {
+                                    color = KColors.GRAY
+                                    italic = true
+                                }
                             }
                         }
                     }
                 },
                 onClick = { clickEvent, element ->
-                    // TODO: Implement logic here
+                    // TODO: Open specific team management ui
                 }
             )
             compound.sortContentBy { it.name }
