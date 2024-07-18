@@ -1,7 +1,5 @@
 package de.marylieh.simplebingo.game
 
-import de.marylieh.simplebingo.Manager
-import net.axay.kspigot.extensions.broadcast
 import net.axay.kspigot.runnables.task
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -54,14 +52,14 @@ object TimerManager {
     }
     
     private fun setActionbar() {
-        if (GamestateManager.timer || GamestateManager.countdown) {
+        if (GamestateManager.timer || GamestateManager.countdown && GamestateManager.currentGameState == GameStates.GAME_PHASE) {
             Bukkit.getOnlinePlayers().forEach {
 
                 if (GamestateManager.timerPaused) {
                     it.sendActionBar(Component.text("Timer pausiert", NamedTextColor.WHITE).decoration(TextDecoration.BOLD, true))
                     return
                 }
-                it.sendActionBar(Component.text(stringifyTime(GamestateManager.timeInSeconds), NamedTextColor.WHITE).decoration(TextDecoration.BOLD, true))
+                it.sendActionBar(Component.text(stringifyTime(GamestateManager.timeInSeconds) + " ${GamestateManager.countFoundItems(it)}/${GamestateManager.maxItems}", NamedTextColor.WHITE).decoration(TextDecoration.BOLD, true))
             }
         }
     }
@@ -86,12 +84,8 @@ object TimerManager {
             }
 
             if (GamestateManager.timeInSeconds < 1) {
-                GamestateManager.currentGameState = GameStates.FINAL_PHASE
-                GamestateManager.timerPaused = true
-
-                broadcast(
-                    Manager.prefix
-                    .append(Component.text("Die Bingo Runde ist vorbei!", NamedTextColor.GREEN).decoration(TextDecoration.BOLD, false)))
+                GamestateManager.countdownFinished = true
+                GameManager.initiateFinal(null)
             }
         }
     }

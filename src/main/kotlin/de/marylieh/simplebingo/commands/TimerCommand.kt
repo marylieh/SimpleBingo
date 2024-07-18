@@ -43,6 +43,7 @@ class TimerCommand {
                     return@runs
                 }
                 GamestateManager.timerPaused = true
+                GamestateManager.countdownFinished = false
                 GamestateManager.timeInSeconds = 0
                 this.player.sendMessage(Manager.prefix
                     .append(Component.text("Der Timer wurde ", NamedTextColor.WHITE).decoration(TextDecoration.BOLD, false))

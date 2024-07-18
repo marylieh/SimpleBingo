@@ -1,6 +1,8 @@
 package de.marylieh.simplebingo.gui
 
 import de.marylieh.simplebingo.Manager
+import de.marylieh.simplebingo.game.GameManager
+import de.marylieh.simplebingo.game.GameStates
 import de.marylieh.simplebingo.game.GamestateManager
 import de.marylieh.simplebingo.gui.guimanager.SettingsManager
 import de.marylieh.simplebingo.gui.icons.SettingsIcons
@@ -47,6 +49,36 @@ class SettingsGUI {
 
             this.pageChanger(Slots.RowThreeSlotFour, SettingsIcons.countdownGUIIcon, 2, null, null)
             this.pageChanger(Slots.RowThreeSlotSix, SettingsIcons.teamsIcon, 3, null, null)
+
+            button(Slots.RowThreeSlotEight, SettingsIcons.startIcon) {guiClickEvent ->
+
+                (guiClickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
+                    if (!(player.hasPermission("bingo.start"))) {
+                        player.closeInventory()
+                        player.sendMessage(Manager.insufficientPermissions)
+                    }
+
+                    if (GamestateManager.currentGameState != GameStates.LOBBY_PHASE) {
+                        player.sendMessage(Manager.prefix
+                            .append(Component.text("Die Instanz befindet sich nicht in der Lobby Phase, führe /reset aus um den Server zu reinitialisieren.", NamedTextColor.RED).decoration(TextDecoration.BOLD, false)))
+                    }
+
+                    player.sendMessage(Manager.prefix
+                        .append(Component.text("Die Bingo Runde wird ", NamedTextColor.GRAY).decoration(TextDecoration.BOLD, false))
+                        .append(Component.text("gestartet.", NamedTextColor.GREEN).decoration(TextDecoration.BOLD, true)))
+                    player.closeInventory()
+                    GameManager.initiateGameUpdate()
+                }
+
+            }
+
+            if (GamestateManager.debug) {
+                button(Slots.RowFourSlotTwo, ItemStack(Material.CHERRY_CHEST_BOAT)) {clickEvent ->
+                    (clickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
+                        player.openInventory(GamestateManager.getBingoInventory(player))
+                    }
+                }
+            }
 
         }
 
@@ -127,10 +159,13 @@ class SettingsGUI {
 
             }
 
-            button(Slots.RowThreeSlotFour, SettingsIcons.getTeamsIcon) { clickEvent ->
+            // TODO: Implement team GUI here
+            button(Slots.RowThreeSlotFour, SettingsIcons.teamsComingSoonIcon) { clickEvent ->
 
                 (clickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
-                    updateTeamManagementGUI(player)
+                    // updateTeamManagementGUI(player)
+                    player.sendMessage(Manager.prefix
+                        .append(Component.text("Dieses Feature wird demnächst via auto update hinzugefügt :)", NamedTextColor.RED).decoration(TextDecoration.BOLD, false)))
                 }
 
             }

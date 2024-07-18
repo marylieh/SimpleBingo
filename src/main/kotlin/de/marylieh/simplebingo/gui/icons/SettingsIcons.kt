@@ -12,6 +12,29 @@ import org.bukkit.inventory.ItemStack
 
 object SettingsIcons {
 
+    val startIcon: ItemStack
+        get() {
+            return itemStack(Material.NETHER_STAR) {
+                meta {
+                    name = literalText("Start") {
+                        color = KColors.GREEN
+                        italic = false
+                    }
+                    addLore {
+                        +literalText(" ")
+                        +literalText("Startet die konfigurierte ") {
+                            color = KColors.GRAY
+                            italic = true
+                        }
+                        +literalText("Bingo Runde.") {
+                            color = KColors.GRAY
+                            italic = true
+                        }
+                    }
+                }
+            }
+        }
+
     val timerIcon: ItemStack
         get() {
             return itemStack(Material.CLOCK) {
@@ -173,6 +196,25 @@ object SettingsIcons {
 
                     addLore {
                         +literalText("Bringt dich eine Seite zurück") {
+                            color = KColors.GRAY
+                            italic = true
+                        }
+                    }
+                }
+            }
+        }
+
+    val teamsComingSoonIcon: ItemStack
+        get() {
+            return itemStack(Material.BARRIER) {
+                meta {
+                    name = literalText("Team System") {
+                        color = KColors.DARKRED
+                        italic = false
+                    }
+
+                    addLore {
+                        +literalText("Coming Soon") {
                             color = KColors.GRAY
                             italic = true
                         }

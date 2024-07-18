@@ -3,6 +3,21 @@ command:
     enabled: true
     slots: 27
 
-InvalidItems:
-  - spawner
-  - command_block
+bingo:
+  maxItems: 9
+  countdownHighestCountWin: true
+  invalidItems:
+    - spawner
+    - command_block
+    - void_air
+    - cave_air
+    - legacy_air
+    - air
+    - end_gateway
+    - waxed_exposed_chiseled_copper
+    - oxidized_chiseled_copper
+    - soul_fire
+    - redstone_wire
+    - fire_coral_wall_fan
+    - spruce_wall_hanging_sign
+    - bamboo_wall_hanging_sign
