@@ -11,10 +11,10 @@ class SettingsCommand {
     val settingsCommand = command("settings") {
         runs {
             if (!(this.player.hasPermission("bingo.settings"))) {
-                this.player.sendMessage(Manager.prefix)
+                this.player.sendMessage(Manager.insufficientPermissions)
                 return@runs
             }
-            this.player.openGUI(SettingsGUI.settingsGUI)
+            this.player.openGUI(SettingsGUI().settingsGUI)
         }
     }
 }

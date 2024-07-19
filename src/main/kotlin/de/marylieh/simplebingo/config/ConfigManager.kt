@@ -10,8 +10,8 @@ object ConfigManager {
     private lateinit var file: File
     private lateinit var configuration: YamlConfiguration
 
-    fun Config() {
-        var dir: File = File("./plugins/SimpleBingo")
+    fun config() {
+        val dir = File("./plugins/SimpleBingo")
 
         if (!dir.exists()) {
             dir.mkdirs()
