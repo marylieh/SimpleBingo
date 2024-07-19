@@ -35,6 +35,7 @@ object GamestateManager {
         get() = ConfigManager.config.getInt("command.backpack.slots")
 
     val excludedItems: List<String>
+        @Suppress("UNCHECKED_CAST")
         get() = ConfigManager.config.getList("bingo.invalidItems") as List<String>
 
     val maxItems
@@ -43,7 +44,7 @@ object GamestateManager {
     val countdownHighestCountWin
         get() = ConfigManager.config.getBoolean("bingo.countdownHighestCountWin")
 
-    var debug = true
+    var debug = false
 
     var winner = ""
 

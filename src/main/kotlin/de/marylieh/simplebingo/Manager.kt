@@ -6,6 +6,7 @@ import de.marylieh.simplebingo.game.GamestateManager
 import de.marylieh.simplebingo.game.TimerManager
 import de.marylieh.simplebingo.listener.*
 import de.marylieh.simplebingo.utils.ActionbarUtil
+import de.marylieh.simplebingo.utils.Updater
 import net.axay.kspigot.commands.register
 import net.axay.kspigot.event.register
 import net.axay.kspigot.extensions.broadcast
@@ -32,6 +33,9 @@ class InternalMainClass : KSpigot() {
         this.saveDefaultConfig()
         ConfigManager.config()
         TimerManager.runTask()
+
+        @Suppress("UNUSED_VARIABLE")
+        if (ConfigManager.config.getBoolean("auto-update")) { val updater = Updater(this, 397989, this.file, Updater.UpdateType.DEFAULT, true) }
 
         checkReload()
         checkConfig()

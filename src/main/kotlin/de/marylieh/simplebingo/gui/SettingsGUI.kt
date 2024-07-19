@@ -27,8 +27,8 @@ import org.bukkit.inventory.ItemStack
 class SettingsGUI {
 
     val settingsGUI = kSpigotGUI(GUIType.FOUR_BY_NINE) {
-        title = literalText("Settings") {
-            color = KColors.LIMEGREEN
+        title = literalText("Settings | BETA") {
+            color = KColors.DARKBLUE
         }
         page(1) {
             transitionFrom = PageChangeEffect.SLIDE_HORIZONTALLY
@@ -48,9 +48,16 @@ class SettingsGUI {
             }
 
             this.pageChanger(Slots.RowThreeSlotFour, SettingsIcons.countdownGUIIcon, 2, null, null)
-            this.pageChanger(Slots.RowThreeSlotSix, SettingsIcons.teamsIcon, 3, null, null)
+            // this.pageChanger(Slots.RowThreeSlotSix, SettingsIcons.teamsIcon, 3, null, null)
+            button(Slots.RowThreeSlotSix, SettingsIcons.teamsComingSoonIcon) { clickEvent ->
+                (clickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
+                    player.closeInventory()
+                    player.sendMessage(Manager.prefix
+                        .append(Component.text("Dieses Feature wird demnächst via auto update hinzugefügt :)", NamedTextColor.RED).decoration(TextDecoration.BOLD, false)))
+                }
+            }
 
-            button(Slots.RowThreeSlotEight, SettingsIcons.startIcon) {guiClickEvent ->
+            button(Slots.RowThreeSlotEight, SettingsIcons.startIcon) { guiClickEvent ->
 
                 (guiClickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
                     if (!(player.hasPermission("bingo.start"))) {
@@ -162,11 +169,8 @@ class SettingsGUI {
             // TODO: Implement team GUI here
             button(Slots.RowThreeSlotFour, SettingsIcons.teamsComingSoonIcon) { clickEvent ->
 
-                (clickEvent.bukkitEvent.whoClicked as? Player)?.let { player ->
-                    // updateTeamManagementGUI(player)
-                    player.sendMessage(Manager.prefix
-                        .append(Component.text("Dieses Feature wird demnächst via auto update hinzugefügt :)", NamedTextColor.RED).decoration(TextDecoration.BOLD, false)))
-                }
+                (clickEvent.bukkitEvent.whoClicked as? Player)?.sendMessage(Manager.prefix
+                    .append(Component.text("Dieses Feature wird demnächst via auto update hinzugefügt :)", NamedTextColor.RED).decoration(TextDecoration.BOLD, false)))
 
             }
         }
@@ -260,6 +264,7 @@ class SettingsGUI {
         player.openGUI(SettingsGUI().settingsGUI, 4)
     }
 
+    @Suppress("UNUSED")
     private fun updateTeamManagementGUI(player: Player) {
         player.openGUI(SettingsGUI().settingsGUI, 5)
     }

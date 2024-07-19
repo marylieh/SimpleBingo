@@ -196,7 +196,7 @@ object GameManager {
             var randomInt = (0..Material.entries.size).random()
             var item = Material.entries[randomInt]
 
-            while (GamestateManager.excludedItems.lowerCase().contains(item.name.lowercase())) {
+            while (GamestateManager.excludedItems.lowerCase().contains(item.name.lowercase()) || item.name.startsWith("LEGACY")) {
                 randomInt = (0..Material.entries.size).random()
                 item = Material.entries[randomInt]
             }
@@ -237,6 +237,11 @@ object GameManager {
                     it.teleport(it.world.spawnLocation)
                     it.heal()
                     it.feed()
+                    it.inventory.clear()
+                    it.sendMessage(Manager.prefix
+                        .append(Component.text("Verwende ", NamedTextColor.GRAY).decoration(TextDecoration.BOLD, false))
+                        .append(Component.text("/bingo ", NamedTextColor.GREEN).decoration(TextDecoration.BOLD, true))
+                        .append(Component.text("um dir die aktuellen Bingo Items anzuzeigen.", NamedTextColor.GRAY).decoration(TextDecoration.BOLD, false)))
                 }
                 if (GamestateManager.timer || GamestateManager.countdown) {
                     GamestateManager.timerPaused = false
@@ -254,11 +259,11 @@ object GameManager {
             period = 20,
             howOften = 10
         ) {
-            var firework = player.world.spawn(
+            val firework = player.world.spawn(
                 player.location,
                 Firework::class.java
             )
-            var fireworkMeta = firework.fireworkMeta
+            val fireworkMeta = firework.fireworkMeta
             fireworkMeta.addEffects(FireworkEffect.builder()
                 .flicker(true)
                 .trail(true)
