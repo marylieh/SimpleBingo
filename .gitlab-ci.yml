@@ -6,6 +6,8 @@ variables:
   JAVA_HOME: "/usr/lib/jvm/java-21-openjdk"
 
 build:
+  tags:
+    - kubernetes
   stage: build
   image: eclipse-temurin:21-jdk
   script:
