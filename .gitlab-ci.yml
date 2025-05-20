@@ -1,0 +1,16 @@
+stages:
+  - build
+
+variables:
+  GRADLE_USER_HOME: "$CI_PROJECT_DIR/.gradle"
+  JAVA_HOME: "/usr/lib/jvm/java-21-openjdk"
+
+build:
+  stage: build
+  image: eclipse-temurin:21-jdk
+  script:
+    - ./gradlew build
+  artifacts:
+    name: "JARs"
+    paths:
+      - build/libs/*.jar
