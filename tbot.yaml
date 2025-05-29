@@ -1,0 +1,13 @@
+version: v2
+proxy_server: teleport.marylieh.social:443
+onboarding:
+  join_method: gitlab
+  token: spbng-bot
+oneshot: true
+storage:
+  type: memory
+outputs:
+- type: identity
+  destination:
+    type: directory
+    path: /opt/machine-id
