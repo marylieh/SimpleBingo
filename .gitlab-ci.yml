@@ -1,5 +1,6 @@
 stages:
   - build
+  - deploy
 
 build:
   tags:
@@ -13,3 +14,29 @@ build:
     paths:
       - build/libs/*.jar
     expire_in: 7 days
+
+deploy-dev:
+  tags:
+    - kubernetes
+  image: debian:stable
+  stage: deploy
+  dependencies:
+    - build
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "dev"'
+      when: always
+    - when: never
+  id_tokens:
+    TBOT_GITLAB_JWT:
+      aud: teleport.marylieh.social
+  before_script:
+    - apt update
+    - apt install curl tree -y
+  script:
+    - cd /tmp
+    - 'curl -O https://cdn.teleport.dev/teleport-v17.4.8-linux-amd64-bin.tar.gz'
+    - tar -xvf teleport-v17.4.8-linux-amd64-bin.tar.gz
+    - ./teleport/install
+    - 'TELEPORT_ANONYMOUS_TELEMETRY=0 tbot start -c /builds/md-public/SimpleBingo/tbot.yaml'
+    - cd /builds/md-public/SimpleBingo
+    - tsh -i /opt/machine-id/identity --proxy teleport.marylieh.social:443 scp build/libs/SimpleBingo-2.0-RELEASE.jar root@node01:/var/kubernetes/volumes/testserver/plugins/
