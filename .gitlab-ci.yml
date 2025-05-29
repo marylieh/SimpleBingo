@@ -1,18 +1,15 @@
 stages:
   - build
 
-variables:
-  GRADLE_USER_HOME: "$CI_PROJECT_DIR/.gradle"
-  JAVA_HOME: "/usr/lib/jvm/java-21-openjdk"
-
 build:
   tags:
     - kubernetes
   stage: build
-  image: eclipse-temurin:21-jdk
+  image: cimg/openjdk:21.0
   script:
-    - ./gradlew build
+    - gradle build
   artifacts:
     name: "JARs"
     paths:
       - build/libs/*.jar
+    expire_in: 7 days
